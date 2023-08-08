@@ -117,7 +117,7 @@ class regex_matcher_40233170 {
         long startTime = System.currentTimeMillis();
 
         // Reading data from the input file using the function input
-        List<String> inputFile =  input("input3.txt");
+        List<String> inputFile =  input("input.txt");
         
         // Logic
         // Taking the size of the dictionary i.e n
