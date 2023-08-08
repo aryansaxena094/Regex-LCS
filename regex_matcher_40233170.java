@@ -8,19 +8,20 @@ import java.io.IOException;
 
 class regex_matcher_40233170 {
 
-    public static List<String> input(String path){
-        // Input from file
+    public static List<String> input(String path) {
+        // Function for Inputing from file
         List<String> inputFile = new ArrayList<String>();
-        try{
+        try {
             inputFile = Files.readAllLines(Paths.get(path));
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return inputFile;
     }
 
-    public static void writeOutput(String output){
-                try {
+    public static void writeOutput(String output) {
+        // Function for writing the output in a file('output.txt')
+        try {
             Files.write(Paths.get("output.txt"), output.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
@@ -31,14 +32,14 @@ class regex_matcher_40233170 {
         int m = A.length();
         int n = B.length();
         int o = C.length();
-    
+
         // Convert strings to lowercase once to avoid multiple conversions
         char[] aChars = A.toLowerCase().toCharArray();
         char[] bChars = B.toLowerCase().toCharArray();
         char[] cChars = C.toLowerCase().toCharArray();
-    
+
         int[][][] L = new int[m + 1][n + 1][o + 1];
-    
+
         for (int i = 0; i <= m; i++) {
             for (int j = 0; j <= n; j++) {
                 for (int k = 0; k <= o; k++) {
@@ -52,13 +53,13 @@ class regex_matcher_40233170 {
                 }
             }
         }
-    
+
         int i = m, j = n, k = o;
         StringBuilder lcs = new StringBuilder();
-    
+
         while (i > 0 && j > 0 && k > 0) {
             if (aChars[i - 1] == bChars[j - 1] && aChars[i - 1] == cChars[k - 1]) {
-                lcs.append(A.charAt(i - 1));  // Use original string to preserve case
+                lcs.append(A.charAt(i - 1)); // Use original string to preserve case
                 i--;
                 j--;
                 k--;
@@ -70,37 +71,37 @@ class regex_matcher_40233170 {
                 k--;
             }
         }
-    
+
         return lcs.reverse().toString();
     }
-        
+
     public static String LCS(String A, String B) {
         int m = A.length();
         int n = B.length();
-        int[][] L = new int[m+1][n+1];
-    
+        int[][] L = new int[m + 1][n + 1];
+
         char[] aChars = A.toLowerCase().toCharArray();
         char[] bChars = B.toLowerCase().toCharArray();
-    
-        for (int i=0; i<=m; i++) {
-            for (int j=0; j<=n; j++) {
+
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
                 if (i == 0 || j == 0)
                     L[i][j] = 0;
-    
+
                 else if (aChars[i - 1] == bChars[j - 1])
-                    L[i][j] = L[i-1][j-1] + 1;
-    
+                    L[i][j] = L[i - 1][j - 1] + 1;
+
                 else
-                    L[i][j] = Math.max(L[i-1][j], L[i][j-1]);
+                    L[i][j] = Math.max(L[i - 1][j], L[i][j - 1]);
             }
         }
-    
+
         int i = m, j = n;
         StringBuilder lcs = new StringBuilder();
-    
+
         while (i > 0 && j > 0) {
             if (aChars[i - 1] == bChars[j - 1]) {
-                lcs.append(A.charAt(i - 1));  // Use the original character from A
+                lcs.append(A.charAt(i - 1)); // Use the original character from A
                 i--;
                 j--;
             } else if (L[i - 1][j] >= L[i][j - 1]) {
@@ -111,43 +112,65 @@ class regex_matcher_40233170 {
         }
         return lcs.reverse().toString();
     }
-    
+
     public static void main(String[] args) {
-        //  Recording Starting Time
+        // Recording Starting Time
         long startTime = System.currentTimeMillis();
 
         // Reading data from the input file using the function input
-        List<String> inputFile =  input("input.txt");
-        
+        List<String> inputFile = input("input.txt");
+
         // Logic
         // Taking the size of the dictionary i.e n
         int n = Integer.parseInt(inputFile.get(0));
         System.out.println(inputFile);
-        // Making a case insensitive
-        Pattern pattern = Pattern.compile(inputFile.get(n+1),Pattern.CASE_INSENSITIVE);
+
+        // Making a pattern of the last word (i.e the Pattern)
+        Pattern pattern = Pattern.compile(inputFile.get(n + 1), Pattern.CASE_INSENSITIVE);
+
+        // Initializing a matcher
         Matcher matcher;
+
+        // Making an ArrayList to store the matching words
         List<String> matchingWords = new ArrayList<>();
-        for (int i = 1; i <= n; i++){
+
+        // Filtering the matching words from the arraylist
+        for (int i = 1; i <= n; i++) {
             matcher = pattern.matcher(inputFile.get(i));
             if (matcher.matches()) {
                 matchingWords.add(inputFile.get(i));
             }
         }
+
+        // Case-insensitively soting the matching words
         Collections.sort(matchingWords, String.CASE_INSENSITIVE_ORDER);
         System.out.println(matchingWords);
+
+        // Initializing output String
         String output;
-        switch(matchingWords.size()){
-            case 3: output = LCS3(matchingWords.get(0), matchingWords.get(1), matchingWords.get(2));
-            break;
-            case 2: output = LCS(matchingWords.get(0), matchingWords.get(1));
-            break;
-            case 1: output = matchingWords.get(0);
-            break;
-            default: output = "";
+
+        // Switch cases to deal with the number of matching words we get
+        switch (matchingWords.size()) {
+            // If 3 matching words then LCS of those three
+            case 3:
+                output = LCS3(matchingWords.get(0), matchingWords.get(1), matchingWords.get(2));
+                break;
+            // If 2 matching words then normal LCS of those two
+            case 2:
+                output = LCS(matchingWords.get(0), matchingWords.get(1));
+                break;
+            // Else output the only matching string straight out
+            case 1:
+                output = matchingWords.get(0);
+                break;
+            // If there are no matching words with the last string then there would be no
+            // output
+            default:
+                output = "";
         }
 
         System.out.println(output);
-        // Writing the output in the output file
+        // Writing the output in the output file using the output string
         writeOutput(output);
 
         // Logging time for debugging the running time
