@@ -1,6 +1,5 @@
-4
-anana
-banana
-ababa
-acaca
-..a..
+3
+aryan
+asmita
+asmita
+.*
