@@ -1,3 +1,7 @@
+// © Aryan Saxena - 40233170
+// COMP 6651 - Algoithm Design Techniques Project
+
+// Imports
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
