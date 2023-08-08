@@ -29,25 +29,32 @@ class regex_matcher_40233170 {
     }
 
     public static String LCS3(String A, String B, String C) {
+        // Getting lengths of all three for the constructing of the matrices
         int m = A.length();
         int n = B.length();
         int o = C.length();
 
-        // Convert strings to lowercase once to avoid multiple conversions
+        // Getting the characters in lower case to perform the comparison case
+        // insensitive
         char[] aChars = A.toLowerCase().toCharArray();
         char[] bChars = B.toLowerCase().toCharArray();
         char[] cChars = C.toLowerCase().toCharArray();
 
+        // Initializing a matrix for DP
         int[][][] L = new int[m + 1][n + 1][o + 1];
 
+        // Filling values in the DP (Going from top left to bottom right)
         for (int i = 0; i <= m; i++) {
             for (int j = 0; j <= n; j++) {
                 for (int k = 0; k <= o; k++) {
                     if (i == 0 || j == 0 || k == 0) {
+                        // For 0th column and 0th row
                         L[i][j][k] = 0;
                     } else if (aChars[i - 1] == bChars[j - 1] && aChars[i - 1] == cChars[k - 1]) {
+                        // If characters match for all three strings
                         L[i][j][k] = L[i - 1][j - 1][k - 1] + 1;
                     } else {
+                        // Getting the last longest LCS among strings (If current doesn't match)
                         L[i][j][k] = Math.max(Math.max(L[i - 1][j][k], L[i][j - 1][k]), L[i][j][k - 1]);
                     }
                 }
@@ -57,8 +64,10 @@ class regex_matcher_40233170 {
         int i = m, j = n, k = o;
         StringBuilder lcs = new StringBuilder();
 
+        // Reconstructing
         while (i > 0 && j > 0 && k > 0) {
             if (aChars[i - 1] == bChars[j - 1] && aChars[i - 1] == cChars[k - 1]) {
+                // If it matches the add to the string
                 lcs.append(A.charAt(i - 1)); // Use original string to preserve case
                 i--;
                 j--;
@@ -71,45 +80,54 @@ class regex_matcher_40233170 {
                 k--;
             }
         }
-
+        // Reverse the string to get lcs because characters are appended
         return lcs.reverse().toString();
     }
 
     public static String LCS(String A, String B) {
+        // Getting lengths in order to construct the matrices
         int m = A.length();
         int n = B.length();
+        // Initializing a DP matrix
         int[][] L = new int[m + 1][n + 1];
-
+        // Getting the characters in lower case to perform the comparison case
+        // insensitive
         char[] aChars = A.toLowerCase().toCharArray();
         char[] bChars = B.toLowerCase().toCharArray();
-
+        // Adding values to the DP matrix
         for (int i = 0; i <= m; i++) {
             for (int j = 0; j <= n; j++) {
-                if (i == 0 || j == 0)
+                if (i == 0 || j == 0) {
+                    // If the column and row are at the 0th index
                     L[i][j] = 0;
-
-                else if (aChars[i - 1] == bChars[j - 1])
+                } else if (aChars[i - 1] == bChars[j - 1]) {
+                    // If the current characters are equal
                     L[i][j] = L[i - 1][j - 1] + 1;
-
-                else
+                } else {
+                    // If the characters are different
                     L[i][j] = Math.max(L[i - 1][j], L[i][j - 1]);
+                }
             }
         }
 
         int i = m, j = n;
         StringBuilder lcs = new StringBuilder();
-
+        // Reconstructing the LCS usingthe DP matrix table
         while (i > 0 && j > 0) {
             if (aChars[i - 1] == bChars[j - 1]) {
+                // If the characters are equal then add it to the LCS
                 lcs.append(A.charAt(i - 1)); // Use the original character from A
                 i--;
                 j--;
-            } else if (L[i - 1][j] >= L[i][j - 1]) {
+            }
+            // Otherwise move to the maximum of the two values(either up or left)
+            else if (L[i - 1][j] >= L[i][j - 1]) {
                 i--;
             } else {
                 j--;
             }
         }
+        // Reverse the string to get lcs because characters are appended
         return lcs.reverse().toString();
     }
 
