@@ -57,7 +57,7 @@ class regex_matcher_40233170 {
 
     public static boolean isRegexMatch(String inputString, String regexPattern) {
         // Customer REGEX function for . and * only.
-        // This would make it faster than the custom java library, since it deals with more complex scenarios
+        // REASONING: This would make it faster than the custom java library, since it deals with more complex scenarios
         int m = inputString.length();
         int n = regexPattern.length();
 
@@ -142,7 +142,6 @@ class regex_matcher_40233170 {
     public static String LCS3(String A, String B, String C) {
         // In order to do LCS of three, we first find the LCS of first two and then compare it with the third one
         // Reasoning: using DP for LCS of 3 will have the complexity of O(m*n*o) or O(n^3). However, using this method we can lower the complexity to O(m*n + lcs*o) i.e O(2n^2) or O(n^2)
-        String lcsOfFirstTwo = LCS(A, B);
-        return LCS(lcsOfFirstTwo, C);
+        return LCS(LCS(A,B), C);
     }
 }
