@@ -1,6 +1,8 @@
-4
-AAABAA
-AACBCA
-AAABCA
-DDEEDD
-AA.B.A
+6
+Recognition
+Recommendation
+Reconciliation
+Reconstruction
+Reconsideration
+Recreation
+Recon.*tion

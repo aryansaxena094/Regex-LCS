@@ -16,12 +16,12 @@ class regex_matcher_40233170 {
  
         // Reading data from the input file
         BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
-        int n = Integer.parseInt(reader.readLine());
+        int n = Integer.parseInt(reader.readLine().trim());
         PriorityQueue<String> sortedStrings = new PriorityQueue<String>(String.CASE_INSENSITIVE_ORDER);
         for (int i = 0; i < n; i++) {
-            sortedStrings.add(reader.readLine());
+            sortedStrings.add(reader.readLine().trim());
         }
-        String regexString = reader.readLine();
+        String regexString = reader.readLine().trim();
         reader.close();
         ArrayList<String> matchingStrings = new ArrayList<String>();
 
