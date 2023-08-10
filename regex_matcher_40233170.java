@@ -3,57 +3,32 @@
 
 // Imports
 import java.util.ArrayList;
-import java.util.List;
 import java.util.PriorityQueue;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 class regex_matcher_40233170 {
 
-    public static List<String> input(String path) {
-        // Function for Inputing from file
-        List<String> inputFile = new ArrayList<String>();
-        try {
-            inputFile = Files.readAllLines(Paths.get(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return inputFile;
-    }
-
-    public static void writeOutput(String output) {
-        // Function for writing the output in a file('output.txt')
-        try {
-            Files.write(Paths.get("output.txt"), output.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String LCS3(String A, String B, String C) {
-        String lcsOfFirstTwo = LCS(A, B);
-        return LCS(lcsOfFirstTwo, C);
-    }
-
     public static boolean isRegexMatch(String inputString, String regexPattern) {
         int m = inputString.length();
         int n = regexPattern.length();
-    
-        // dp[i][j] will be true if the first i characters in inputString match the first j characters in regexPattern
+
+        // dp[i][j] will be true if the first i characters in inputString match the
+        // first j characters in regexPattern
         boolean[][] dp = new boolean[m + 1][n + 1];
-    
+
         // An empty pattern matches an empty string
         dp[0][0] = true;
-    
+
         // Handle patterns like a* or a*b* or a*b*c*
         for (int j = 1; j <= n; j++) {
             if (regexPattern.charAt(j - 1) == '*') {
                 dp[0][j] = dp[0][j - 2];
             }
         }
-    
+
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 if (regexPattern.charAt(j - 1) == '.' || regexPattern.charAt(j - 1) == inputString.charAt(i - 1)) {
@@ -70,7 +45,7 @@ class regex_matcher_40233170 {
         }
         return dp[m][n];
     }
-    
+
     public static String LCS(String A, String B) {
         // Getting lengths in order to construct the matrices
         int m = A.length();
@@ -118,60 +93,59 @@ class regex_matcher_40233170 {
         return lcs.reverse().toString();
     }
 
-    public static void main(String[] args) {
+    public static String LCS3(String A, String B, String C) {
+        String lcsOfFirstTwo = LCS(A, B);
+        return LCS(lcsOfFirstTwo, C);
+    }
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
         // Recording Starting Time
         long startTime = System.currentTimeMillis();
+ 
+        // Reading data from the input file
+        BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
+        int n = Integer.parseInt(reader.readLine());
+        PriorityQueue<String> sortedStrings = new PriorityQueue<String>();
+        for (int i = 0; i < n; i++) {
+            sortedStrings.add(reader.readLine());
+        }
+        String regexString = reader.readLine();
+        reader.close();
 
-        // Reading data from the input file using the function input
-        List<String> data = input("input.txt");
+        // System.out.println(sortedStrings);
 
-        System.out.println(data);
-
-        // Logic
-        // Taking the size of the dictionary i.e n
-        int n = Integer.parseInt(data.get(0));
-
-        PriorityQueue<String> sortedStrings = new PriorityQueue<>(String::compareToIgnoreCase);
-        sortedStrings.addAll(data.subList(1, data.size() - 1));
+        ArrayList<String> matchingStrings = new ArrayList<String>();
         
-        System.out.println(sortedStrings);
-
-        // Getting the pattern
-        String regexString = data.get(n+1);
-
-        // Making an ArrayList to store the matching words
-        data = new ArrayList<>();
-
         // Filtering the matching words from the arraylist
-        while(!sortedStrings.isEmpty() && data.size() < 3){
+        while (!sortedStrings.isEmpty() && matchingStrings.size() < 3) {
             String current = sortedStrings.poll();
             if (isRegexMatch(current, regexString)) {
-                data.add(current);
+                matchingStrings.add(current);
             }
         }
-        
-        System.out.println(data);
 
+        // System.out.println(matchingStrings);
+        FileWriter writer = new FileWriter("output.txt");
         // Switch cases to deal with the number of matching words we get
-        switch (data.size()) {
+        switch (matchingStrings.size()) {
             // If 3 matching words then LCS of those three
             case 3:
-                writeOutput(LCS3(data.get(0), data.get(1), data.get(2)));
+                writer.write(LCS3(matchingStrings.get(0), matchingStrings.get(1), matchingStrings.get(2)));
                 break;
             // If 2 matching words then normal LCS of those two
             case 2:
-                writeOutput(LCS(data.get(0), data.get(1)));
+                writer.write(LCS(matchingStrings.get(0), matchingStrings.get(1)));
                 break;
             // Else output the only matching string straight out
             case 1:
-                writeOutput(data.get(0));
+                writer.write(matchingStrings.get(0));
                 break;
             // If there are no matching words with the last string then there would be no
             // output
             default:
-                writeOutput("");
+                writer.write("");
         }
-
+        writer.close();
         // Logging time for debugging the running time
         long endTime = System.currentTimeMillis();
         System.out.println("Execution time in milliseconds: " + (endTime - startTime));
