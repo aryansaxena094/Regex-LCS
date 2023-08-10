@@ -1,5 +1,4 @@
 // © Aryan Saxena - 40233170 - COMP 6651 - Algoithm Design Techniques Project
-// Imports
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.io.BufferedReader;
@@ -57,6 +56,8 @@ class regex_matcher_40233170 {
     }
 
     public static boolean isRegexMatch(String inputString, String regexPattern) {
+        // Customer REGEX function for . and * only.
+        // This would make it faster than the custom java library, since it deals with more complex scenarios
         int m = inputString.length();
         int n = regexPattern.length();
 
