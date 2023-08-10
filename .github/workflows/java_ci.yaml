@@ -26,6 +26,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add output.txt
+        git add -f output.txt  # Force add the output.txt file
         git commit -m "Add output.txt" -a || echo "No changes to commit"
         git push
