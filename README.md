@@ -1,42 +1,43 @@
-# Regex Matcher and Longest Common Subsequence Finder
+# LCS - Longest Common Subsequence Matcher
 
-This Java program, `regex_matcher_40233170`, is designed to read a list of strings from an input file, match them against a given regex pattern, and then find the Longest Common Subsequence (LCS) among the matching strings.
+A project by Aryan Saxena for COMP 6651 - Algorithm Design Techniques.
+
+## Overview
+
+This project provides an implementation of the Longest Common Subsequence (LCS) algorithm with an added twist. It matches strings from a dictionary against a regex pattern and then computes the LCS of the matching strings.
 
 ## Features
 
-- **File Input**: Reads a list of strings from a specified file.
-- **Regex Matching**: Matches each string against a given regex pattern.
-- **LCS Finder**: Determines the LCS among the matching strings. Supports finding LCS for two or three strings.
-- **File Output**: Writes the LCS result to an `output.txt` file.
+- **Regex Matcher**: Custom implementation of a regex matcher that supports `.` and `*` patterns.
+- **LCS Calculator**: Computes the LCS of two strings in a case-insensitive manner.
+- **LCS3 Calculator**: Computes the LCS of three strings by first determining the LCS of the first two and then comparing it with the third.
 
-## Usage
+## How to Use
 
-1. Ensure you have the Java Development Kit (JDK) installed on your system.
-2. Compile the program:
-   ```bash
-   javac regex_matcher_40233170.java
-   ```
-3. Run the program:
-   ```bash
-   java regex_matcher_40233170
-   ```
+1. **Input**: Place your input in `input.txt`. The first line should contain the number of strings in the dictionary, followed by the strings themselves. The last line should contain the regex pattern.
+2. **Run**: Execute the `regex_matcher_40233170` class.
+3. **Output**: The result will be written to `output.txt`.
 
-## Input Format
+## Code Structure
 
-The input file (`input.txt`) should be structured as follows:
+- **Reading the Input**: The program reads from `input.txt` and populates a priority queue to maintain the dictionary in sorted order.
+- **Regex Matching**: The program filters out strings from the dictionary that match the regex pattern.
+- **LCS Calculation**: Depending on the number of matching strings, the program computes the LCS. If there are three matching strings, it computes the LCS of the three; if two, then the LCS of the two; if one, it directly outputs the matching string.
 
-- The first line contains an integer `n`, the number of strings in the dictionary.
-- The next `n` lines contain the strings.
-- The last line contains the regex pattern against which the strings will be matched.
+## Algorithms
 
-## Output
+### 1. Regex Matcher
 
-The program will generate an `output.txt` file containing the LCS of the matching strings. If no strings match the regex pattern, the output file will be empty.
+A custom regex matcher that supports `.` (matches any character) and `*` (matches zero or more of the preceding character). This custom implementation is faster than Java's built-in regex library for these specific patterns.
 
-## Performance
+### 2. LCS Calculator
 
-The program uses dynamic programming to determine the LCS, ensuring efficient computation even for longer strings.
+The LCS calculator uses dynamic programming to compute the LCS of two strings. It performs the comparison in a case-insensitive manner. Instead of repeatedly calling `Character.toLowerCase()`, which can be slower, this implementation converts the entire strings to lowercase once, optimizing for time over space.
 
-## Author
+### 3. LCS3 Calculator
 
-[aryansaxena094](https://github.com/aryansaxena094)
+To compute the LCS of three strings, the program first determines the LCS of the first two strings and then compares it with the third. This approach reduces the complexity from \(O(n^3)\) to \(O(2n^2)\).
+
+## License
+
+© Aryan Saxena - 40233170 - COMP 6651
