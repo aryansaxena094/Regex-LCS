@@ -98,8 +98,8 @@ class regex_matcher_40233170 {
         int n = B.length();
         // Initializing a DP matrix
         int[][] L = new int[m + 1][n + 1];
-        // Getting the characters in lower case to perform the comparison case
-        // insensitive
+        // Getting the characters in lower case to perform the comparison case-insensitive
+        // REASONING: Other approach would be to use Character.lowercase(). However, that in practice would be slower since there would be repeated calls to the Character class (TESTED). Regarding the space, it would increase temporarily while the function is running and then reduce since the it would be dumped to Java's Garbage Collector. It was eiter space or time here, I gave preference to time. Both codes would be efficient, however this method would be faster.
         char[] aChars = A.toLowerCase().toCharArray();
         char[] bChars = B.toLowerCase().toCharArray();
         // Adding values to the DP matrix
