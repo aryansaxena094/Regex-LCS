@@ -1,7 +1,4 @@
-// © Aryan Saxena - 40233170
-// COMP 6651 - Algoithm Design Techniques Project
-
-// Imports
+// © Aryan Saxena - 40233170 - COMP 6651 - Algoithm Design Techniques Project
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.io.BufferedReader;
@@ -11,30 +8,33 @@ import java.io.IOException;
 
 class regex_matcher_40233170 {
     public static void main(String[] args) throws NumberFormatException, IOException {
-        // Recording Starting Time
-        long startTime = System.currentTimeMillis();
- 
-        // Reading data from the input file
+        // Read Operation
+        // Creating a buffered Reader
         BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
+        // Getting the length of the dictionary n
         int n = Integer.parseInt(reader.readLine().trim());
+        // Creating a priority queue for getting the dictionary in sorted order and adding values to it
         PriorityQueue<String> sortedStrings = new PriorityQueue<String>(String.CASE_INSENSITIVE_ORDER);
         for (int i = 0; i < n; i++) {
             sortedStrings.add(reader.readLine().trim());
         }
+        // Getting the regex String
         String regexString = reader.readLine().trim();
-        reader.close();
-        ArrayList<String> matchingStrings = new ArrayList<String>();
+        reader.close(); // Closing the reader
 
-        System.out.println(sortedStrings);
-        // Filtering the matching words from the arraylist
+        // Doing the regex operation
+        ArrayList<String> matchingStrings = new ArrayList<String>(); //Creating an arrayList in order to store the matching strings
+
+        // Filtering the matching words from the priorityqueue to the matchingStrings
         while (!sortedStrings.isEmpty() && matchingStrings.size() < 3) {
             String current = sortedStrings.poll();
             if (isRegexMatch(current, regexString)) {
                 matchingStrings.add(current);
             }
         }
-        System.out.println(matchingStrings);
-        FileWriter writer = new FileWriter("output.txt");
+
+        // Write operation + LCS function
+        FileWriter writer = new FileWriter("output.txt"); //Creating a writer
         switch (matchingStrings.size()) {
             // If 3 matching words then LCS of those three
             case 3:
@@ -48,18 +48,16 @@ class regex_matcher_40233170 {
             case 1:
                 writer.write(matchingStrings.get(0));
                 break;
-            // If there are no matching words with the last string then there would be no
-            // output
+            // If there are no matching words with the last string then there would be no output
             default:
                 writer.write("");
         }
-        writer.close();
-        // Logging time for debugging the running time
-        long endTime = System.currentTimeMillis();
-        System.out.println("Execution time in milliseconds: " + (endTime - startTime));
+        writer.close(); //Closing the writer
     }
 
     public static boolean isRegexMatch(String inputString, String regexPattern) {
+        // Customer REGEX function for . and * only.
+        // REASONING: This would make it faster than the custom java library, since it deals with more complex scenarios
         int m = inputString.length();
         int n = regexPattern.length();
 
@@ -100,8 +98,8 @@ class regex_matcher_40233170 {
         int n = B.length();
         // Initializing a DP matrix
         int[][] L = new int[m + 1][n + 1];
-        // Getting the characters in lower case to perform the comparison case
-        // insensitive
+        // Getting the characters in lower case to perform the comparison case-insensitive
+        // REASONING: Other approach would be to use Character.lowercase(). However, that in practice would be slower since there would be repeated calls to the Character class (TESTED). Regarding the space, it would increase temporarily while the function is running and then reduce since the it would be dumped to Java's Garbage Collector. It was eiter space or time here, I gave preference to time. Both codes would be efficient, however this method would be faster.
         char[] aChars = A.toLowerCase().toCharArray();
         char[] bChars = B.toLowerCase().toCharArray();
         // Adding values to the DP matrix
@@ -142,9 +140,8 @@ class regex_matcher_40233170 {
     }
 
     public static String LCS3(String A, String B, String C) {
-        String lcsOfFirstTwo = LCS(A, B);
-        return LCS(lcsOfFirstTwo, C);
+        // In order to do LCS of three, we first find the LCS of first two and then compare it with the third one
+        // Reasoning: using DP for LCS of 3 will have the complexity of O(m*n*o) or O(n^3). However, using this method we can lower the complexity to O(m*n + lcs*o) i.e O(2n^2) or O(n^2)
+        return LCS(LCS(A,B), C);
     }
-
-    
 }
