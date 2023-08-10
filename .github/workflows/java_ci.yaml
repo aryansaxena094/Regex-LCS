@@ -21,4 +21,11 @@ jobs:
       run: |
         javac regex_matcher_40233170.java
         java regex_matcher_40233170
-        cat output.txt
+
+    - name: Commit and push if changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add output.txt
+        git commit -m "Add output.txt" -a || echo "No changes to commit"
+        git push
