@@ -10,6 +10,54 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 class regex_matcher_40233170 {
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        // Recording Starting Time
+        long startTime = System.currentTimeMillis();
+ 
+        // Reading data from the input file
+        BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
+        int n = Integer.parseInt(reader.readLine());
+        PriorityQueue<String> sortedStrings = new PriorityQueue<String>(String.CASE_INSENSITIVE_ORDER);
+        for (int i = 0; i < n; i++) {
+            sortedStrings.add(reader.readLine());
+        }
+        String regexString = reader.readLine();
+        reader.close();
+        ArrayList<String> matchingStrings = new ArrayList<String>();
+
+        System.out.println(sortedStrings);
+        // Filtering the matching words from the arraylist
+        while (!sortedStrings.isEmpty() && matchingStrings.size() < 3) {
+            String current = sortedStrings.poll();
+            if (isRegexMatch(current, regexString)) {
+                matchingStrings.add(current);
+            }
+        }
+        System.out.println(matchingStrings);
+        FileWriter writer = new FileWriter("output.txt");
+        switch (matchingStrings.size()) {
+            // If 3 matching words then LCS of those three
+            case 3:
+                writer.write(LCS3(matchingStrings.get(0), matchingStrings.get(1), matchingStrings.get(2)));
+                break;
+            // If 2 matching words then normal LCS of those two
+            case 2:
+                writer.write(LCS(matchingStrings.get(0), matchingStrings.get(1)));
+                break;
+            // Else output the only matching string straight out
+            case 1:
+                writer.write(matchingStrings.get(0));
+                break;
+            // If there are no matching words with the last string then there would be no
+            // output
+            default:
+                writer.write("");
+        }
+        writer.close();
+        // Logging time for debugging the running time
+        long endTime = System.currentTimeMillis();
+        System.out.println("Execution time in milliseconds: " + (endTime - startTime));
+    }
 
     public static boolean isRegexMatch(String inputString, String regexPattern) {
         int m = inputString.length();
@@ -98,56 +146,5 @@ class regex_matcher_40233170 {
         return LCS(lcsOfFirstTwo, C);
     }
 
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        // Recording Starting Time
-        long startTime = System.currentTimeMillis();
- 
-        // Reading data from the input file
-        BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
-        int n = Integer.parseInt(reader.readLine());
-        PriorityQueue<String> sortedStrings = new PriorityQueue<String>();
-        for (int i = 0; i < n; i++) {
-            sortedStrings.add(reader.readLine());
-        }
-        String regexString = reader.readLine();
-        reader.close();
-
-        // System.out.println(sortedStrings);
-
-        ArrayList<String> matchingStrings = new ArrayList<String>();
-        
-        // Filtering the matching words from the arraylist
-        while (!sortedStrings.isEmpty() && matchingStrings.size() < 3) {
-            String current = sortedStrings.poll();
-            if (isRegexMatch(current, regexString)) {
-                matchingStrings.add(current);
-            }
-        }
-
-        // System.out.println(matchingStrings);
-        FileWriter writer = new FileWriter("output.txt");
-        // Switch cases to deal with the number of matching words we get
-        switch (matchingStrings.size()) {
-            // If 3 matching words then LCS of those three
-            case 3:
-                writer.write(LCS3(matchingStrings.get(0), matchingStrings.get(1), matchingStrings.get(2)));
-                break;
-            // If 2 matching words then normal LCS of those two
-            case 2:
-                writer.write(LCS(matchingStrings.get(0), matchingStrings.get(1)));
-                break;
-            // Else output the only matching string straight out
-            case 1:
-                writer.write(matchingStrings.get(0));
-                break;
-            // If there are no matching words with the last string then there would be no
-            // output
-            default:
-                writer.write("");
-        }
-        writer.close();
-        // Logging time for debugging the running time
-        long endTime = System.currentTimeMillis();
-        System.out.println("Execution time in milliseconds: " + (endTime - startTime));
-    }
+    
 }
